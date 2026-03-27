@@ -1,0 +1,18 @@
+# Discontinued Flask app
+Flask_app/
+
+# Dependencies
+node_modules/
+python_modules/
+.venv/
+.venv-workers/
+
+# Wrangler local state
+.wrangler/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Generated data files (local only)
+Cloudflare_app/input/

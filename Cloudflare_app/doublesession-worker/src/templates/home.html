@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1>Welcome to the Double Session App</h1>
+<p>In this app, you can:
+    <ul>
+        <li>Browse the <a href="/movies">movies available</a> this week in Lisbon according to your filters.</li>
+        <li><a href="/double_sessions">Create a movie plan</a> with this week's possible double sessions of your selected movies.</li>
+        <li>Browse <a href="/upcoming">upcoming releases</a> for the next 8 weeks and share movies you're interested in to your phone.</li>
+        <li>Share individual double session results directly from the results page.</li>
+    </ul><br>
+    Data is scraped weekly on Thursday morning from local machine.
+</p>
+
+<p><b>Data last scraped on:</b> {{ last_scraped | format_timestamp_for_display }}</p>
+
+<a href="/movies">Available Movies</a>
+<p>See this week's available movies, filter by cinema and day</p>
+
+<a href="/upcoming">Upcoming Releases</a>
+<p>Browse the next 8 weeks of releases and share movies you're interested in</p>
+
+<a href="/double_sessions">Double Sessions</a>
+<p>Create a plan with possible double sessions of your selected movies, and share individual results</p>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}Available Movies{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" href="/css/movies.css">
+{% endblock %}
+
+{% block content %}
+<h2>Browse Available Movies This Week</h2>
+<p>Browse, filter and select movies and press "Plan Double Sessions" to take your selection to the Double Session Planner.</p>
+
+<div class="settings-summary">
+    <details>
+        <summary>Current Filter Settings:</summary>
+        <p class="metadata-info"><b>Included Cinemas: </b>{{ included_cinemas | join(', ') }}</p>
+        <p class="metadata-info"><b>Excluded Cinemas: </b>{{ excluded_cinemas | join(', ') }}</p>
+        <p class="metadata-info"><b>Day Settings: </b>
+            {% for day, cfg in day_settings.items() %}
+                {% if cfg.excluded %}{{ day }}: excluded{% else %}{{ day }}: from {{ cfg.start }}{% endif %}{% if not loop.last %} | {% endif %}
+            {% endfor %}
+        </p>
+        <p class="metadata-info"><b>Last Scraped: </b>{{ last_scraped | format_timestamp_for_display }}</p>
+    </details>
+</div><br>
+
+<div class="settings-summary">
+    <details>
+        <summary><b>Filter Movies by Cinema:</b></summary>
+        <form method="post">
+            <div class="setting-group">
+                <label>Exclude Cinemas:</label>
+                <div class="checkbox-group">
+                    {% for cinema_name in all_cinemas %}
+                    <div>
+                        <input type="checkbox" id="exclude_cinema_{{ cinema_name }}" name="excluded_cinemas" value="{{ cinema_name }}"
+                               {% if cinema_name in excluded_cinemas %}checked{% endif %}>
+                        <label for="exclude_cinema_{{ cinema_name }}">{{ cinema_name }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Day Settings (exclude a day or set earliest start time):</label>
+                <table>
+                    <tr><th>Day</th><th>Exclude</th><th>Earliest Start</th></tr>
+                    {% for day in ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                    {% set cfg = day_settings[day] %}
+                    <tr>
+                        <td>{{ day }}</td>
+                        <td><input type="checkbox" name="exclude_day_{{ day }}" id="exclude_{{ day }}"
+                                   {% if cfg.excluded %}checked{% endif %}
+                                   onchange="document.getElementById('start_{{ day }}').disabled = this.checked"></td>
+                        <td><input type="text" name="start_{{ day }}" id="start_{{ day }}" value="{{ cfg.start }}"
+                                   pattern="[0-2][0-9]:[0-5][0-9]" placeholder="HH:MM"
+                                   size="5" maxlength="5"
+                                   {% if cfg.excluded %}disabled{% endif %}></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <br>
+            <button type="submit" name="apply_filters" value="true">Apply Filter</button>
+        </form>
+        <br>
+        <form method="post">
+            <button type="submit" name="restore_defaults" value="true" class="button-danger">Restore Default Settings</button>
+        </form>
+        <br>
+    </details>
+</div>
+
+<form action="/selected_for_double_sessions" method="POST">
+    <h3>✅ Available Movies (in Included Cinemas)</h3>
+    <ol>
+        {% if approved_movies %}
+            {% for movie in approved_movies %}
+            <li class="movie-item">
+                <div class="movie-content">
+                    <img src="{{ movie.poster_url }}" alt="Poster" class="poster">
+                    <div class="movie-info">
+                        <div class="checkbox-group">
+                            <input type="checkbox"
+                                id="{{ movie.detail_link }}"
+                                name="movie_title"
+                                value="{{ movie.title }}"
+                                {% if movie.title in selected_titles %}checked{% endif %}>
+                            <label for="{{ movie.detail_link }}" class="movie-title">
+                                <a href="{{ movie.detail_link }}" target="_blank">{{ movie.title }}</a>
+                            </label>
+                        </div>
+                        <details>
+                            <summary>More details</summary>
+                            <p><b>Duration:</b> {{ movie.duration }} minutes</p>
+                            <p><b>Description:</b> {{ movie.description }}</p>
+                            <details>
+                                <summary><b>Cinemas</b></summary>
+                                {% for cinema in movie.cinemas %}
+                                <li><em>{{ cinema.cinema_name }}</em></li>
+                                {% for day, sessions_list in cinema.sessions.items() %}
+                                <b>{{ day }}:</b>
+                                {% for session in sessions_list %}
+                                    {{ session.start | format_time_only }} - {{ session.end | format_time_only }} ||
+                                {% endfor %}
+                                {% else %}
+                                No sessions for this day.
+                                {% endfor %}
+                                {% else %}
+                                <p>No cinemas found for this movie.</p>
+                                {% endfor %}
+                                <br>
+                            </details>
+                        </details>
+                        <br>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            <button type="submit" name="take_selection_to_planner" value="true" class="sticky-button">
+                Plan Double Sessions
+            </button>
+        {% else %}
+            <em>No movies found playing in the specified included cinemas.</em>
+        {% endif %}
+    </ol>
+</form>
+
+<hr>
+<h3>❌ Movies Only on Excluded Days in Included Cinemas</h3>
+<ol>
+    {% if excl_day_movies %}
+        {% for movie in excl_day_movies %}
+        <li class="movie-item">
+            <div class="movie-content">
+                <img src="{{ movie.poster_url }}" alt="Poster" class="poster">
+                <div class="movie-info">
+                    <a href="{{ movie.detail_link }}" target="_blank" class="movie-title">{{ movie.title }}</a><br>
+                    <details>
+                        <summary>More details</summary>
+                        <p><b>Duration:</b> {{ movie.duration }} minutes</p>
+                        <p><b>Description:</b> {{ movie.description }}</p>
+                        <details>
+                            <summary><b>Cinemas</b></summary>
+                            {% for cinema in movie.cinemas %}
+                            <li><em>{{ cinema.cinema_name }}</em></li>
+                            {% for day, sessions_list in cinema.sessions.items() %}
+                            <b>{{ day }}:</b>
+                            {% for session in sessions_list %}
+                                {{ session.start | format_time_only }} - {{ session.end | format_time_only }} ||
+                            {% endfor %}
+                            {% else %}
+                            No sessions for this day.
+                            {% endfor %}
+                            {% else %}
+                            <p>No cinemas found for this movie.</p>
+                            {% endfor %}
+                            <br>
+                        </details>
+                    </details>
+                    <br>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    {% else %}
+        <li><em>No movies found that only play on excluded days.</em></li>
+    {% endif %}
+</ol>
+
+<hr>
+<h3>❌ Movies Only in Excluded Cinemas</h3>
+<ol>
+    {% if missing_movies %}
+        {% for movie in missing_movies %}
+        <li class="movie-item">
+            <div class="movie-content">
+                <img src="{{ movie.poster_url }}" alt="Poster" class="poster">
+                <div class="movie-info">
+                    <a href="{{ movie.detail_link }}" target="_blank" class="movie-title">{{ movie.title }}</a><br>
+                    <details>
+                        <summary>More details</summary>
+                        <p><b>Duration:</b> {{ movie.duration }} minutes</p>
+                        <p><b>Description:</b> {{ movie.description }}</p>
+                        <details>
+                            <summary><b>Cinemas</b></summary>
+                            {% for cinema in movie.cinemas %}
+                            <li><em>{{ cinema.cinema_name }}</em></li>
+                            {% for day, sessions_list in cinema.sessions.items() %}
+                            <b>{{ day }}:</b>
+                            {% for session in sessions_list %}
+                                {{ session.start | format_time_only }} - {{ session.end | format_time_only }} ||
+                            {% endfor %}
+                            {% else %}
+                            No sessions for this day.
+                            {% endfor %}
+                            {% else %}
+                            <p>No cinemas found for this movie.</p>
+                            {% endfor %}
+                            <br>
+                        </details>
+                    </details>
+                    <br>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    {% else %}
+        <em>No movies found only in excluded cinemas.</em>
+    {% endif %}
+</ol>
+
+<a href="/double_sessions">Go to Double Session Planner</a>
+{% endblock %}

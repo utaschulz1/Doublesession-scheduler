@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Upcoming Movies{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" href="/css/movies.css">
+{% endblock %}
+
+{% block content %}
+<h2>Upcoming Releases</h2>
+<p>Select movies you're interested in and tap <strong>Share Selected</strong> to send them to your phone.</p>
+
+{% if upcoming_weeks %}
+    {% for week in upcoming_weeks %}
+    <h3>📅 {{ week.release_date | format_release_date }}</h3>
+    <ol>
+        {% for movie in week.movies %}
+        <li class="movie-item">
+            <div class="movie-content">
+                <img src="{{ movie.poster_url }}" alt="Poster" class="poster">
+                <div class="movie-info">
+                    <div class="checkbox-group">
+                        <input type="checkbox"
+                               id="upcoming_{{ movie.film_id }}"
+                               name="upcoming_movie"
+                               data-title="{{ movie.title }}"
+                               data-url="{{ movie.detail_link }}">
+                        <label for="upcoming_{{ movie.film_id }}" class="movie-title">
+                            <a href="{{ movie.detail_link }}" target="_blank">{{ movie.title }}</a>
+                        </label>
+                    </div>
+                    <details>
+                        <summary>More details</summary>
+                        {% if movie.duration %}
+                        <p><b>Duration:</b> {{ movie.duration }} minutes</p>
+                        {% endif %}
+                        {% if movie.description %}
+                        <p><b>Description:</b> {{ movie.description }}</p>
+                        {% endif %}
+                    </details>
+                    <br>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ol>
+    {% endfor %}
+{% else %}
+    <p><em>No upcoming movies found. Run estreiasScraper.py and appendUpcoming.py to populate this section.</em></p>
+{% endif %}
+
+<button class="sticky-button" onclick="shareSelected()">Share Selected</button>
+
+<script>
+function shareSelected() {
+    const boxes = [...document.querySelectorAll('input[name="upcoming_movie"]:checked')];
+    if (!boxes.length) {
+        alert('Select at least one movie first.');
+        return;
+    }
+    const text = boxes.map(b => b.dataset.title + '\n' + b.dataset.url).join('\n\n');
+    if (navigator.share) {
+        navigator.share({ title: 'Upcoming Movies', text: text });
+    } else {
+        navigator.clipboard.writeText(text)
+            .then(() => alert('Copied to clipboard!'))
+            .catch(() => alert('Could not copy. Your browser may not support this.'));
+    }
+}
+</script>
+{% endblock %}

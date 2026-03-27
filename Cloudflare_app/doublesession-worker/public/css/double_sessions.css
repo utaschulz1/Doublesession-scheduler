@@ -1,0 +1,538 @@
+/*
+============================================================
+Double Sessions Page CSS
+Purpose: Provides lean, black and white styling for the
+         double_sessions.html template, with mobile responsiveness.
+============================================================
+*/
+
+/* --- General Page Elements --- */
+/*body {}
+    /* Inherits general body styles from base.css */
+
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    font-size: 2em;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+h3 {
+    color: #333;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+    text-align: center; /* Category titles (e.g., "Double Feature Results") remain centered */
+}
+
+p {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+/* Base padding for all direct child divs to prevent content touching edges */
+div {
+    padding: 0 10px;
+}
+
+/* --- Settings Summary Sections (Current Config & Filter Settings) --- */
+.settings-summary {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 1em auto; /* Center the block, reduced vertical margin */
+    padding: 0.8em 1em; /* Reduced vertical padding, added horizontal padding */
+    max-width: 700px; /* Consistent with available_movies.css for a lean look */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-size: 0.95em; /* Slightly smaller font within this section */
+}
+
+.settings-summary details {
+    cursor: pointer;
+}
+
+.settings-summary summary {
+    font-weight: bold;
+    padding: 0.3em 0; /* Reduced padding */
+    outline: none; /* Remove focus outline */
+    text-align: left; /* Aligns the summary text to the left */
+}
+
+.settings-summary p {
+    text-align: left; /* Aligns all text within the <details> block to the left */
+    margin: 0.3em 0;
+    padding-left: 0.8em; /* Indent text slightly */
+    font-size: 0.9em;
+}
+
+.settings-summary p span {
+    font-weight: bold;
+    color: #555;
+}
+
+/* --- Form Styling --- */
+form {
+    margin-top: 0.8em;
+}
+
+/* A group of settings (e.g., Max Gap, Preferred Cinema) */
+.setting-group {
+    margin-bottom: 1em;
+    border-top: 1px solid #eee;
+    padding-top: 0.8em;
+    max-width: 700px; /* Match settings-summary max-width for alignment */
+    margin-left: auto; /* Center the setting group container */
+    margin-right: auto; /* Center the setting group container */
+}
+
+.setting-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    color: #333;
+    text-align: left; /* Aligns the label text to the left */
+    padding-left: 10px; /* Matches form's div padding */
+}
+
+/* Max Gap Input Field */
+input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 80px; /* Fixed width for number input */
+    text-align: center; /* Keep the number itself centered within the input box */
+    -moz-appearance: textfield; /* Remove arrows in Firefox */
+    display: block; /* Make it a block element */
+    margin-left: 10px; /* Aligns the input field to the left */
+    margin-bottom: 1em; /* Space below the input field */
+}
+
+/* Remove arrows for Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Preferred Cinema Radio Buttons Group */
+.setting-group .checkbox-group {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line if space is tight */
+    justify-content: flex-start; /* Align the group of radio buttons to the left */
+    gap: 5px; /* Spacing between radio button options */
+    margin-top: 0.5em;
+    padding: 0 10px; /* Horizontal padding for the group */
+}
+
+/* Individual radio button item (input + label) */
+.setting-group .checkbox-group > div { /* Assuming each input/label pair is wrapped in a div */
+    display: flex;
+    align-items: left;
+    white-space: nowrap; /* Prevent individual item from breaking onto multiple lines */
+}
+
+.setting-group .checkbox-group input[type="radio"] {
+    margin-right: 0px;
+    transform: scale(1.0);
+}
+
+.setting-group .checkbox-group label {
+    font-weight: normal;
+    margin-bottom: 0; /* Override default label margin */
+    color: #555;
+    font-size: 0.95em; /* Slightly smaller font for cinema names */
+    text-align: left; /* Ensure label text is left-aligned */
+}
+/* double_sessions.css additions */
+
+.gap-inputs-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 15px; /* Spacing between the input items */
+    margin-top: 10px;
+    padding-left: 20px; /* Indent slightly from the main label */
+}
+
+.gap-input-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between label and input */
+}
+
+.gap-input-item label {
+    font-weight: bold;
+    color: #333; /* Darker label for clarity */
+}
+
+.gap-input-item input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Make input fill its container */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.gap-help-text {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 2px;
+}
+
+/* --- Movie Selection Checkboxes --- */
+/* This targets the div containing each movie checkbox and label (excluding others) */
+form > div:not(.settings-summary):not(#htmlContentHolder) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align movie title and checkbox to the left */
+    margin: 0.5em auto; /* Center the container, vertical margin */
+    max-width: 600px; /* Max width for readability */
+    padding-left: 10px; /* Padding from the left edge */
+}
+
+form > div:not(.settings-summary):not(#htmlContentHolder) input[type="checkbox"] {
+    order: 1; /* Place checkbox first visually */
+    margin-right: 8px; /* Space between checkbox and label */
+    transform: scale(1.1);
+}
+
+form > div:not(.settings-summary):not(#htmlContentHolder) label {
+    order: 2; /* Place label second visually */
+    font-weight: normal;
+    color: #333;
+    font-size: 1.05em;
+    flex-grow: 1; /* Allow label to take available space */
+    text-align: left; /* Ensure label text is left-aligned */
+}
+
+/* --- Buttons --- */
+button {
+    background-color: #333;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: block; /* Make button a block element */
+    margin: 0.8em auto; /* Center the button */
+}
+
+button:hover {
+    background-color: #555;
+    transform: translateY(-1px);
+}
+
+/* Group of action buttons (e.g., Open in New Window) */
+.action-buttons {
+    display: flex;
+    justify-content: center; /* Center the group of buttons */
+    gap: 15px; /* Space between buttons */
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+}
+
+.action-buttons button, .button-link {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none; /* For button-link, remove underline */
+    display: inline-block; /* Allow button-link to sit next to other buttons */
+    margin: 0.5em; /* Margin around individual action buttons */
+}
+
+.action-buttons button:hover, .button-link:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+}
+
+/* --- Double Feature Results Section --- */
+.category-section {
+    margin: 2em auto; /* Center the section */
+    padding: 1em;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-width: 800px; /* Max width for readability */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.category-section h3 {
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+}
+
+.day-section {
+    margin-bottom: 1.5em;
+    padding: 0.8em;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+}
+
+.day-section h3 {
+    font-size: 1.2em;
+    color: #444;
+    text-align: left; /* Day titles left-aligned within their box */
+    margin-bottom: 1em;
+    border-bottom: none;
+}
+
+.day-section .past-day {
+    color: #888; /* Dim past days */
+    font-style: italic;
+}
+
+.double-feature-option {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.double-feature-option h5 {
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 0.8em;
+    color: #333;
+    text-align: left; /* Left-align the option heading */
+}
+
+.double-feature-option p {
+    text-align: left; /* Left-align movie details */
+    margin: 0.3em 0;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.double-feature-option .gap-info {
+    font-style: italic;
+    color: #777;
+    margin: 0.5em 0;
+    text-align: center; /* Keep gap info centered for visual break */
+}
+
+/* --- User Settings and Debugging Info --- */
+.user-settings p {
+    text-align: left; /* Left align selected titles */
+    margin-top: 1em;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px; /* Match other left-aligned elements */
+}
+
+#htmlContentHolder { /* Hidden div for JS content */
+    text-align: center; /* Its content might be centered or not depending on its own styling */
+    margin-top: 1em;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.restore-form { /* If this is used, ensure it follows general form alignment */
+    text-align: center;
+    margin-top: 1em;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Links --- */
+a {
+    color: #333;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #555;
+}
+
+/* --- Debugging Output --- */
+.output-movie-plan {
+    background-color: #f0f0f0;
+    border: 1px dashed #ccc;
+    padding: 1em;
+    margin: 2em auto;
+    max-width: 800px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85em;
+    white-space: pre-wrap; /* Preserve whitespace and wrap long lines */
+    word-wrap: break-word; /* Break long words */
+    color: #666;
+}
+
+/* --- Separator Rule --- */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 3em auto;
+    max-width: 800px;
+}
+
+/*
+============================================================
+Responsive Adjustments
+============================================================
+*/
+
+/* For tablets and smaller desktops (up to 768px wide) */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .settings-summary {
+        max-width: 95%; /* Allow it to take more width on small screens */
+        margin-left: 5px;
+        margin-right: 5px;
+        padding: 0.8em; /* Consistent padding */
+    }
+
+    .settings-summary p, .settings-summary summary {
+        text-align: left; /* Keep left alignment */
+        padding-left: 0.5em; /* Slightly less indent on small screens */
+    }
+
+    .setting-group {
+        max-width: 95%; /* Match settings summary width */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .setting-group label {
+        font-size: 0.95em;
+        padding-left: 5px; /* Adjust padding */
+    }
+
+    input[type="number"] {
+        width: 60px;
+        padding: 6px;
+        margin-left: 5px; /* Adjust margin */
+    }
+
+    .setting-group .checkbox-group {
+        flex-direction: row; /* Keep them in a row as much as possible */
+        flex-wrap: wrap; /* Allow wrapping if space is very limited */
+        justify-content: flex-start; /* Still left-aligned */
+        gap: 10px; /* Adjust gap for smaller screens */
+        padding: 0 5px; /* Adjust padding */
+    }
+    
+    .setting-group .checkbox-group > div {
+        white-space: normal; /* Allow text to wrap if the cinema name is long */
+        text-align: left; /* Keep text left-aligned even if it wraps */
+    }
+
+    form > div:not(.settings-summary):not(#htmlContentHolder) {
+        justify-content: flex-start; /* Keep left-aligned */
+        padding-left: 5px; /* Adjust padding */
+        max-width: 95%; /* Adjust max-width */
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .action-buttons button, .button-link {
+        width: 80%;
+        margin: 0.5em auto;
+        padding: 10px 15px;
+    }
+
+    .category-section {
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 0.8em;
+        max-width: 95%;
+    }
+
+    .day-section h3 {
+        text-align: left; /* Keep left-aligned */
+        font-size: 1.1em;
+    }
+
+    .double-feature-option p {
+        font-size: 0.9em;
+    }
+
+    .double-feature-option h5 {
+        text-align: left; /* Keep left-aligned */
+    }
+
+    .output-movie-plan {
+        margin-left: 10px;
+        margin-right: 10px;
+        max-width: 95%;
+    }
+}
+
+/* For small mobile devices (up to 480px wide) */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6em;
+    }
+    
+    .settings-summary {
+        padding: 0.5em;
+        font-size: 0.9em;
+    }
+
+    .settings-summary p, .settings-summary summary {
+        padding-left: 0.3em;
+    }
+
+    .setting-group label {
+        padding-left: 3px;
+    }
+
+    input[type="number"] {
+        margin-left: 3px;
+    }
+
+    .setting-group .checkbox-group {
+        gap: 8px;
+        padding: 0 3px;
+    }
+
+    form > div:not(.settings-summary):not(#htmlContentHolder) {
+        padding-left: 3px;
+    }
+
+    .action-buttons button, .button-link {
+        width: calc(100% - 20px);
+        font-size: 0.9em;
+    }
+
+    .category-section, .output-movie-plan {
+        padding: 0.5em;
+    }
+
+    .double-feature-option p, .double-feature-option .gap-info {
+        font-size: 0.85em;
+    }
+
+    .gap-inputs-group {
+        grid-template-columns: 1fr; /* Stack inputs vertically */
+    }
+}
+

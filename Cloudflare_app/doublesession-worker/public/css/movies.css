@@ -1,0 +1,317 @@
+/* General Page Layout */
+h2, h3 {
+    text-align: center;
+    color: #333;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+}
+
+p {
+    text-align: left;
+    margin-bottom: 1em;
+}
+
+/* Container for content, applies some padding */
+div {
+    padding: 0 10px;
+}
+
+/* Settings Summary and Filter Sections - Made smaller */
+.settings-summary {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 1em auto; /* Reduced top/bottom margin */
+    padding: 0.8em; /* Reduced padding */
+    max-width: 700px; /* Slightly reduced max width for a more compact feel */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-size: 0.95em; /* Slightly smaller font within this section */
+}
+
+.settings-summary details {
+    cursor: pointer;
+}
+
+.settings-summary summary {
+    font-weight: bold;
+    padding: 0.3em 0; /* Reduced padding */
+    outline: none; /* Remove focus outline */
+}
+
+.settings-summary .metadata-info {
+    text-align: left;
+    margin: 0.3em 0; /* Reduced margin */
+    padding-left: 0.8em; /* Reduced padding */
+    font-size: 0.9em;
+}
+
+/* Form Styling */
+form {
+    margin-top: 0.8em; /* Reduced margin */
+}
+
+.setting-group {
+    margin-bottom: 1em; /* Reduced margin */
+    border-top: 1px solid #eee;
+    padding-top: 0.8em; /* Reduced padding */
+}
+
+.setting-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5em; /* Reduced margin */
+    color: #333;
+}
+
+.checkbox-group { /* This effects the user settings checkbox group */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0px; /* Reduced gap */
+    justify-content: flex-start;
+}
+
+.checkbox-group div { /* This effects each individual checkbox in the user settings */
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 6px; /* This is the space between the checkboxes and the text in the user settings */
+    transform: scale(1.0); /* Back to normal size, or even slightly smaller if desired */
+}
+
+.checkbox-group label {
+    font-weight: normal;
+    margin-bottom: 0;
+    color: #555;
+}
+
+/* Buttons */
+button {
+    background-color: #333;
+    color: white;
+    padding: 8px 15px; /* Reduced padding for smaller buttons */
+    border: none;
+    border-radius: 4px; /* Slightly smaller border-radius */
+    cursor: pointer;
+    font-size: 0.95em; /* Slightly smaller font size */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: block;
+    margin: 0.8em auto; /* Reduced margin */
+}
+
+button:hover {
+    background-color: #555;
+    transform: translateY(-1px); /* Smaller hover effect */
+}
+
+.button-danger {
+    background-color: #dc3545;
+}
+
+.button-danger:hover {
+    background-color: #c82333;
+}
+
+/* Movie List */
+ol {
+    list-style: none;
+    padding: 0;
+    margin: 1.5em auto;
+    max-width: 800px;
+}
+
+.movie-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 1.5em;
+    padding: 1em;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.movie-content {
+    display: flex;
+    gap: 1em;
+    align-items: flex-start;
+}
+
+.poster {
+    width: 100px;
+    height: auto;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.movie-info {
+    flex-grow: 1;
+}
+
+.movie-title {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+    text-decoration: none;
+}
+
+.movie-title:hover {
+    text-decoration: underline;
+}
+
+.movie-info details {
+    margin-top: 0.5em;
+    border-top: 1px dashed #eee;
+    padding-top: 0.5em;
+}
+
+.movie-info summary {
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    outline: none;
+}
+
+.movie-info ul {
+    margin: 0.5em 0 0.5em 1.5em;
+    list-style-type: disc;
+    color: #666;
+}
+
+.movie-info li {
+    margin-bottom: 0.3em;
+}
+
+.movie-info p {
+    text-align: left;
+    margin: 0.5em 0;
+    color: #666;
+    font-size: 0.95em;
+}
+
+/* Horizontal Rule */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 3em auto;
+    max-width: 800px;
+}
+
+/* Sticky Button */
+.sticky-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 25px; /* Slightly reduced padding */
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; /* Slightly smaller font */
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.sticky-button:hover {
+    background-color: #555;
+    transform: translateY(-1px);
+}
+
+/* Adjustments for the specific checkbox in movie list */
+.movie-item .checkbox-group {
+    display: flex;
+    align-items: left;
+    margin-bottom: 0.5em;
+}
+
+.movie-item .checkbox-group input[type="checkbox"] {
+    margin-right: 10px; /* Space between checkbox and movie title */
+    transform: scale(1.1); /* Keep movie selection checkbox slightly bigger */
+}
+
+.movie-item .checkbox-group label.movie-title {
+    margin-bottom: 0;
+}
+
+/* Links outside of buttons */
+a {
+    color: #333;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #555;
+}
+
+/* Responsiveness for smaller screens */
+@media (max-width: 768px) {
+    .settings-summary, ol {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .settings-summary {
+        max-width: 90%; /* Allow it to take more width on small screens */
+    }
+
+    .movie-content {
+        flex-direction: column;
+        align-items: left;
+    }
+
+    .poster {
+        width: 120px; /* Slightly smaller poster on small screens */
+        margin-bottom: 1em;
+    }
+
+    .movie-info {
+        text-align: left;
+    }
+
+    .movie-item .checkbox-group {
+        justify-content: left;
+    }
+
+    .sticky-button {
+        bottom: 10px;
+        right: 10px;
+        padding: 10px 18px; /* Further reduced padding */
+        font-size: 14px; /* Further reduced font size */
+    }
+
+    h2, h3, p {
+        padding: 0 10px;
+    }
+
+    .checkbox-group {
+        justify-content: left;
+        flex-direction: row;
+        gap: 8px; /* Reduced gap */
+    }
+    
+    .settings-summary .metadata-info {
+        text-align: left;
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 400px) {
+    .checkbox-group div {
+        flex-direction: row;
+        width: 100%;
+        justify-content: left;
+        
+    }
+    .sticky-button {
+        width: calc(100% - 40px);
+        left: 20px;
+        right: 20px;
+        bottom: 10px;
+        font-size: 0.9em;
+        padding: 10px 12px;
+        border-radius: 0;
+    }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Double Session Planner{% endblock %}</title>
+    <link rel="stylesheet" href="/css/base.css">
+    {% block head_content %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/movies">Available Movies</a>
+            <a href="/upcoming">Upcoming</a>
+            <a href="/double_sessions">Double Sessions</a>
+        </nav>
+    </header>
+
+    <div>
+        {% if message %}
+        <ul class="flashes">
+            <li class="{{ message_category }}">{{ message }}</li>
+        </ul>
+        {% endif %}
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        <a href="/">Back to Home</a>
+        <p>&copy; {{ current_year }} Double Session Planner</p>
+    </footer>
+</body>
+</html>

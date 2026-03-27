@@ -1,0 +1,159 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0.2em;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures footer is at the bottom */
+}
+
+/* Header Styling */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 0.5em 0;
+    text-align: center;
+}
+
+/* Navigation Styling */
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap !important; /* Allows nav items to wrap on smaller screens */
+    gap: 5px; /* Space between nav links */
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5em 0.5em;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #555;
+}
+
+/* Main Content Area */
+/*{% block content %}{% endblock %} 
+    
+/* Flash Messages - You already have flash_messages.css, but including some basics */
+.flashes {
+    list-style: none;
+    padding: 0;
+    margin: 1em 0;
+    text-align: center;
+}
+
+.flashes li {
+    padding: 0.8em;
+    margin-bottom: 0.5em;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.flashes .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flashes .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.flashes .warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+    margin-top: auto; /* Pushes footer to the bottom */
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Basic Responsiveness (for smaller screens) */
+@media (max-width: 600px) {
+    nav {
+        flex-direction: column; /* Stack nav items vertically on small screens */
+        align-items: center;
+    }
+
+    nav a {
+        width: 80%; /* Make links take up more width */
+        margin-bottom: 0.5em;
+    }
+
+    body {
+        font-size: 0.9em;
+    }
+}
+
+/* ---------------- Popup Info Icon ---------------- */
+.info-icon {
+  cursor: pointer;
+  margin-left: 5px;
+  color: #007bff; /* Blue color for the info icon */
+  font-weight: bold;
+  font-size: large;
+}
+
+.popup {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  max-width: 500px; /* Max width for larger screens */
+  border-radius: 8px;
+  position: relative;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

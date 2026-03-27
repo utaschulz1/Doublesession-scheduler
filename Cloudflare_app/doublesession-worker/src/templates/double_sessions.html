@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}Double Sessions{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" href="/css/double_sessions.css">
+{% endblock %}
+
+{% block content %}
+<h1>Double Sessions</h1>
+
+{% if error %}
+<ul class="flashes"><li class="warning">{{ error }}</li></ul>
+{% endif %}
+
+<form method="post">
+
+    <div class="settings-summary">
+        <details>
+            <summary><b>Currently configured settings:</b></summary>
+            <p><span>Included Cinemas:</span> {{ included_cinemas | join(', ') if included_cinemas else 'None' }}</p>
+            <p><span>Excluded Cinemas:</span> {{ excluded_cinemas | join(', ') if excluded_cinemas else 'None' }}</p>
+            <p><span>Day Settings:</span>
+                {% for day, cfg in day_settings.items() %}
+                    {% if cfg.excluded %}{{ day }}: excluded{% else %}{{ day }}: from {{ cfg.start }}{% endif %}{% if not loop.last %} | {% endif %}
+                {% endfor %}
+            </p>
+            <p><span>Min. Gap (Same Cinema):</span> {{ min_gap_same_cinema }} minutes</p>
+            <p><span>Max. Gap (Same Cinema):</span> {{ max_gap_same_cinema }} minutes</p>
+            <p><span>Min. Gap (Different Cinema):</span> {{ min_gap_different_cinema }} minutes</p>
+            <p><span>Max. Gap (Different Cinema):</span> {{ max_gap_different_cinema }} minutes</p>
+            <p><span>Preferred Cinema:</span> {{ preferred_cinema if preferred_cinema else 'None' }}</p>
+            <p>Go to <a href="/movies">Available Movies</a> to filter movies.</p>
+            <p class="metadata-info"><b>Last Scraped:</b> {{ last_scraped | format_timestamp_for_display }}</p>
+        </details>
+    </div><br>
+
+    <div class="settings-summary">
+        <details>
+            <summary><b>Adjust Settings for Double Session Calculation:</b></summary>
+            <div class="setting-group">
+                <label><b>Gap Settings (minutes)</b> between movies:</label>
+                <div class="gap-inputs-group">
+                    <div class="gap-input-item">
+                        <label for="min_gap_same_cinema">Min. Gap (Same Cinema):</label>
+                        <input type="number" id="min_gap_same_cinema" name="min_gap_same_cinema" value="{{ min_gap_same_cinema }}" required>
+                        <span class="gap-help-text">(e.g. -15 for overlap, -20 to 60)</span>
+                    </div>
+                    <div class="gap-input-item">
+                        <label for="max_gap_same_cinema">Max. Gap (Same Cinema):</label>
+                        <input type="number" id="max_gap_same_cinema" name="max_gap_same_cinema" value="{{ max_gap_same_cinema }}" required>
+                        <span class="gap-help-text">(0 to 520 min)</span>
+                    </div>
+                    <div class="gap-input-item">
+                        <label for="min_gap_different_cinema">Min. Gap (Different Cinema):</label>
+                        <input type="number" id="min_gap_different_cinema" name="min_gap_different_cinema" value="{{ min_gap_different_cinema }}" required>
+                        <span class="gap-help-text">(0 to 120 min)</span>
+                    </div>
+                    <div class="gap-input-item">
+                        <label for="max_gap_different_cinema">Max. Gap (Different Cinema):</label>
+                        <input type="number" id="max_gap_different_cinema" name="max_gap_different_cinema" value="{{ max_gap_different_cinema }}" required>
+                        <span class="gap-help-text">(0 to 520 min)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label><b>Preferred Cinema</b> (sorted on top in results):</label>
+                <div class="checkbox-group">
+                    {% for cinema_name in all_cinemas %}
+                    <div>
+                        <input type="radio" id="preferred_cinema_{{ loop.index }}" name="preferred_cinema" value="{{ cinema_name }}"
+                               {% if cinema_name == preferred_cinema %}checked{% endif %}>
+                        <label for="preferred_cinema_{{ loop.index }}">{{ cinema_name }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </details>
+    </div>
+
+    <h2>Select Movies:</h2>
+    {% for movie in approved_movies %}
+    <div>
+        <input type="checkbox"
+               id="movie-{{ loop.index }}"
+               name="movie_title"
+               value="{{ movie.title }}"
+               {% if movie.title in selected_titles %}checked{% endif %}>
+        <label for="movie-{{ loop.index }}">{{ movie.title }}</label>
+    </div>
+    {% endfor %}
+    <br>
+    <button type="submit">Show Sessions</button>
+</form>
+<br>
+<p>Select movies above and click "Show Sessions" to find double features.</p>
+
+{% if selected_titles %}
+<p><strong>Selected:</strong> {{ selected_titles | join(', ') }}</p>
+{% endif %}
+
+{% if movie_plan_data %}
+    <h2>Double Feature Results</h2>
+    {% if movie_plan_data.message %}
+        <p>{{ movie_plan_data.message }}</p>
+    {% else %}
+        {% for category in movie_plan_data.categories %}
+        <div class="category-section">
+            <h3>{{ category.title }}</h3>
+            {% for day_data in category.days %}
+            <div class="day-section">
+                <h3 {% if day_data.is_past %}class="past-day"{% endif %}>
+                    {% if day_data.is_past %}(Past) {% endif %}{{ day_data.day }}
+                </h3>
+                {% for combo in day_data.combinations %}
+                {% set share_text %}🎬 Double Feature — {{ day_data.day }}
+1. {{ combo.first_movie.title }}
+   {{ combo.first_movie.cinema }} • {{ combo.first_movie.start | format_time_only }} → {{ combo.first_movie.end | format_time_only }}
+——— Gap: {{ combo.gap_minutes }} min ———
+2. {{ combo.second_movie.title }}
+   {{ combo.second_movie.cinema }} • {{ combo.second_movie.start | format_time_only }} → {{ combo.second_movie.end | format_time_only }}{% endset %}
+                <div class="double-feature-option">
+                    <h5>Option {{ loop.index }}:</h5>
+                    <p>1. <b>{{ combo.first_movie.title }}</b></p>
+                    <p>{{ combo.first_movie.cinema }}<br>
+                        {{ combo.first_movie.start | format_time_only }} &rarr; {{ combo.first_movie.end | format_time_only }}</p>
+                    <p class="gap-info">--- (Gap: {{ combo.gap_minutes }} min) ---</p>
+                    <p>2. <b>{{ combo.second_movie.title }}</b></p>
+                    <p>{{ combo.second_movie.cinema }}<br>
+                        {{ combo.second_movie.start | format_time_only }} &rarr; {{ combo.second_movie.end | format_time_only }}</p>
+                    <button type="button" class="share-btn" data-share="{{ share_text | e }}">Share</button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+
+<script>
+document.addEventListener('click', function(e) {
+    if (!e.target.classList.contains('share-btn')) return;
+    const text = e.target.dataset.share;
+    if (navigator.share) {
+        navigator.share({ title: 'Double Feature Plan', text: text });
+    } else {
+        navigator.clipboard.writeText(text)
+            .then(() => alert('Copied to clipboard!'))
+            .catch(() => alert('Could not copy. Your browser may not support this.'));
+    }
+});
+</script>
+
+{% endblock %}
