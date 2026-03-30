@@ -1,5 +1,5 @@
 """
-This script scrapes movie session times for a list of cinemas from filmspot.pt.
+This script scrapes movie session times for a list of cinemas from filmspot.pt. Due to the data on the website it only fetches session of the current movie week (Thursday to Wednesday).
 
 Workflow:
 1.  Fetches data for each cinema, extracting movie titles and session times.

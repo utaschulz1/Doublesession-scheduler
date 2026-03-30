@@ -111,10 +111,10 @@
             {% for day_data in category.days %}
             <div class="day-section">
                 <h3 {% if day_data.is_past %}class="past-day"{% endif %}>
-                    {% if day_data.is_past %}(Past) {% endif %}{{ day_data.day }}
+                    {% if day_data.is_past %}(Past) {% endif %}{{ day_data.day }} ({{ day_data.combinations[0].first_movie.start | format_date_short }})
                 </h3>
                 {% for combo in day_data.combinations %}
-                {% set share_text %}🎬 Double Feature — {{ day_data.day }}
+                {% set share_text %}🎬 Double Feature — {{ day_data.day }} {{ combo.first_movie.start | format_date_short }}
 1. {{ combo.first_movie.title }}
    {{ combo.first_movie.cinema }} • {{ combo.first_movie.start | format_time_only }} → {{ combo.first_movie.end | format_time_only }}
 ——— Gap: {{ combo.gap_minutes }} min ———

@@ -4,6 +4,8 @@ Filters movie data by excluded cinemas and day settings into 3 categories:
 1. approved_movies: in included cinemas on non-excluded days
 2. excl_day_movies: in included cinemas but only on excluded days
 3. missing_movies: only in excluded cinemas
+
+It also returns the data dict for the templates during classification function. If you want to render more data in the template, add it to the base dict in classify_movies and it will be available in all 3 categories.
 """
 from typing import List, Dict, Any, Tuple, Set
 
@@ -88,6 +90,8 @@ def classify_movies(
             'poster_url': movie.get('poster_url', ''),
             'duration': movie.get('duration', ''),
             'description': movie.get('description', ''),
+            'director': movie.get('director'),
+            'year': movie.get('year'),
         }
 
         if has_approved_session:

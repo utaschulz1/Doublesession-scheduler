@@ -19,8 +19,8 @@
 	"r2_buckets": [
 		{
 			"binding": "MOVIE_DATA",
-			"bucket_name": "doublesession-data"
-		}
+			"bucket_name": "doublesession-data",
+}
 	]
 	/**
 	 * Smart Placement

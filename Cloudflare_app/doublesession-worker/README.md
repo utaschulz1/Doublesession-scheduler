@@ -183,6 +183,18 @@ All POST routes follow the **Post/Redirect/Get pattern**: update the cookie, red
 
 `appendUpcoming.py` normalises the field names to match the existing `movies` structure (`title_pt`/`title_original` → `title`, `detail_url` → `detail_link`, adds `duration_minutes`) and injects the result as `"upcoming"` into `movies_by_title.json`.
 
+### Advertisement buffer (known limitation)
+
+Session end times in `movies_by_title.json` are calculated at pre-processing time as:
+
+```
+end_time = start_time + duration + ADVERTISEMENT_BUFFER_MINUTES (hardcoded to 15)
+```
+
+This buffer is applied **uniformly to all cinemas**. Cinemas that run no ads or shorter ad reels (e.g. Ideal) will have artificially late end times, which can cause the planner to reject valid double session combinations. As a workaround, set the minimum gap for same-cinema or different-cinema to a negative value in the planner settings — this effectively cancels out the extra buffer. To permanently change the buffer, edit `ADVERTISEMENT_BUFFER_MINUTES` in `rearrangeToMoviesByTitle.py` and re-run the pre-processing pipeline.
+
+---
+
 ### `movies_by_title.json` structure
 
 ```json

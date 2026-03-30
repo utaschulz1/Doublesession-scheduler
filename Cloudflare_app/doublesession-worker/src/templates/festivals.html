@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Festivals{% endblock %}
+
+{% block content %}
+<h2>Film Festivals</h2>
+<p>Select a festival to browse its programme and filter sessions by cinema and day.</p>
+
+<ul>
+    {% for key, festival in festivals.items() %}
+    <li>
+        <a href="/festivals/{{ key }}">{{ festival.name }}</a>
+    </li>
+    {% else %}
+    <li><em>No festivals currently available.</em></li>
+    {% endfor %}
+</ul>
+{% endblock %}

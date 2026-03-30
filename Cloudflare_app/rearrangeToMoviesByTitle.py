@@ -17,8 +17,9 @@ import json
 from datetime import datetime, timedelta
 import logging
 import sys
-import readwrite_settings
 import os
+
+ADVERTISEMENT_BUFFER_MINUTES = 15
 
 # --- Configure logging ---
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -87,8 +88,7 @@ def calculate_session_details(start_time_str: str, duration_minutes: int | None,
         return session_details
 
 def rearrange_cinema_data(input_filename=DEFAULT_REARRANGE_INPUT_FILE, output_filename=DEFAULT_REARRANGE_OUTPUT_FILE):
-    current_settings = readwrite_settings.load_preferences()
-    advertisement_buffer_minutes = current_settings.get('ADVERTISEMENT_BUFFER_MINUTES', 15)
+    advertisement_buffer_minutes = ADVERTISEMENT_BUFFER_MINUTES
     logging.info(f"rearrange_cinema_data is using ADVERTISEMENT_BUFFER_MINUTES: {advertisement_buffer_minutes}")
 
     """

@@ -137,6 +137,38 @@ ol {
     gap: 1em;
     align-items: flex-start;
 }
+/* force vertical posters, but landscape ones can be contained within the same size box to avoid zooming/cropping.
+.poster {
+    width: 120px;         
+    height: 180px;        
+    object-fit: cover;   
+    object-position: center; 
+    border-radius: 4px;
+    flex-shrink: 0;
+    background-color: #eee; 
+}
+*/
+/*
+.poster-landscape {
+    width: 200px;            
+    height: 120px;           
+    object-fit: cover;       
+    object-position: center; 
+    border-radius: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+*/
+
+.poster-landscape {
+    width: 300px;
+    height: 180px;
+    object-fit: contain;     /* SHOWS THE WHOLE IMAGE, NO ZOOM */
+    background-color: #f0f0f0; /* Fills the background so it looks like a frame */
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
 
 .poster {
     width: 100px;
@@ -144,6 +176,7 @@ ol {
     border-radius: 4px;
     flex-shrink: 0;
 }
+
 
 .movie-info {
     flex-grow: 1;
@@ -199,25 +232,58 @@ hr {
     max-width: 800px;
 }
 
-/* Sticky Button */
+/* Sticky Button old
 .sticky-button {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    padding: 12px 25px; /* Slightly reduced padding */
+    padding: 12px 25px; /
     background-color: #333;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px; /* Slightly smaller font */
+    font-size: 16px; 
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}*/
+
+.planner-btn {
+    background-color: #333;
+    color: white;
 }
 
-.sticky-button:hover {
-    background-color: #555;
-    transform: translateY(-1px);
+.share-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+/* The Buttons inside the bar */
+.sticky-button {
+    position: relative; /* NOT fixed */
+    margin: 0;         /* Remove auto margins */
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 15px;
+    flex: 0 1 180px;   /* Buttons will be 180px wide max */
+    text-align: center;
+    display: inline-block;
+}
+
+/* The Bar at the bottom */
+.sticky-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 12px 0; /* Vertical padding */
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.15);
+    z-index: 2000;
 }
 
 /* Adjustments for the specific checkbox in movie list */

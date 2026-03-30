@@ -100,12 +100,6 @@ def prepare_results_for_display(combinations: List[Tuple], preferred_cinema: str
         return {"message": "No double features found with the selected movies and criteria.", "categories": []}
 
     today = date.today()
-    current_day = today.strftime('%A')
-    movie_week = ["Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"]
-    fixed_order = {day: i for i, day in enumerate(movie_week)}
-
-    start_i = movie_week.index(current_day) if current_day in movie_week else 0
-    dynamic_order = [movie_week[(start_i + i) % len(movie_week)] for i in range(len(movie_week))]
 
     same_cinema, preferred, other = [], [], []
     for first, second in combinations:
@@ -121,26 +115,26 @@ def prepare_results_for_display(combinations: List[Tuple], preferred_cinema: str
     def format_category(title, combos):
         if not combos:
             return None
-        by_day = {}
+        by_date = {}
         for first, second in combos:
+            date_str = first['start'][:10]
             gap = int((
                 datetime.fromisoformat(second['start']) - datetime.fromisoformat(first['end'])
             ).total_seconds() // 60)
-            by_day.setdefault(first['day'], []).append({
+            by_date.setdefault(date_str, []).append({
                 'first_movie': first,
                 'second_movie': second,
                 'gap_minutes': gap
             })
 
         sorted_days = []
-        for day_name in dynamic_order:
-            if day_name in by_day:
-                is_past = fixed_order.get(day_name, -1) < fixed_order.get(current_day, -1)
-                sorted_days.append({
-                    'day': day_name,
-                    'combinations': sorted(by_day[day_name], key=lambda c: datetime.fromisoformat(c['first_movie']['start'])),
-                    'is_past': is_past
-                })
+        for date_str in sorted(by_date.keys()):
+            session_date = date.fromisoformat(date_str)
+            sorted_days.append({
+                'day': session_date.strftime('%A'),
+                'combinations': sorted(by_date[date_str], key=lambda c: datetime.fromisoformat(c['first_movie']['start'])),
+                'is_past': session_date < today
+            })
         return {'title': title, 'days': sorted_days}
 
     categories = []
