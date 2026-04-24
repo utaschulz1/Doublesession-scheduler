@@ -117,7 +117,11 @@ def _get_movie_details(detail_url: str) -> Dict[str, Any]:
     Mirrors get_movie_details_from_page() in dataAllCinemas.py.
     """
     details: Dict[str, Any] = {'duration': None, 'poster_url': None, 'description': None}
-    soup = _fetch_soup(detail_url)
+    try:
+        soup = _fetch_soup(detail_url)
+    except requests.exceptions.RequestException as e:
+        logging.warning(f"Skipping detail page {detail_url}: {e}")
+        return details
 
     # Duration: div#filmeInfoDivRight > b[string='Duração'] + span > NavigableString
     info_div = soup.find('div', id='filmeInfoDivRight')
